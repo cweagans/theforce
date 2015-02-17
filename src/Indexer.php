@@ -4,7 +4,6 @@ namespace cweagans\TheForce;
 
 use PhpParser\Lexer;
 use PhpParser\Node\Name;
-use PhpParser\Parser;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\NodeDumper;
@@ -36,7 +35,18 @@ class Indexer {
    */
   private $filelist = array();
 
+  /**
+   * A PHP Parser instance.
+   *
+   * @var Parser
+   */
   private $parser;
+
+  /**
+   * A NodeTraverser instance.
+   *
+   * @var NodeTraverser
+   */
   private $traverser;
 
   /**
@@ -104,6 +114,6 @@ class Indexer {
    * Reindex a specific file.
    */
   public function indexFile($path) {
-    $this->traverser->traverse($this->parser->parse(file_get_contents($path)));
+    $this->traverser->traverse($this->parser->parseFile($path));
   }
 }
