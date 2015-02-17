@@ -56,6 +56,20 @@ class Dispatcher {
   }
 
   /**
+   * Get function completions from SymbolTable.
+   *
+   * Example:
+   * {"cmd": "getFunctions", "data": {"prefix": "drupal_ge"}}
+   */
+  public function getFunctions($data) {
+    if (isset($data->prefix)) {
+      $this->connection->write(json_encode(SymbolTable::getInstance()->getFunctions($data->prefix)));
+      return;
+    }
+    $this->connection->write(json_encode(SymbolTable::getInstance()->getFunctions()));
+  }
+
+  /**
    * Disconnect the currently connected client.
    *
    * Example:
