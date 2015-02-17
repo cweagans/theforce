@@ -70,6 +70,18 @@ class Dispatcher {
   }
 
   /**
+   * Get information for a specific function.
+   *
+   * Example:
+   * {"cmd": "getFunction", "data": {"prefix": "drupal_get_path"}}
+   */
+  public function getFunction($data) {
+    $function_name = $data->function;
+    $function_info = SymbolTable::getInstance()->getFunctions($function_name);
+    $this->connection->write(json_encode($function_info[$function_name]));
+  }
+
+  /**
    * Disconnect the currently connected client.
    *
    * Example:
