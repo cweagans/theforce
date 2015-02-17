@@ -15,6 +15,8 @@ use cweagans\TheForce\SymbolTable;
  */
 class SymbolFinder extends NodeVisitorAbstract {
 
+  private $filepath;
+
   /**
    * enterNode must be defined by a child class.
    * @param Node $node
@@ -24,12 +26,27 @@ class SymbolFinder extends NodeVisitorAbstract {
   }
 
   /**
+   * Get the file path that we're operating on for use in metadata.
+   *
+   * Each file is parsed and traversed individually, so this should be set for
+   * each file that's indexed by \cweagans\TheForce\Indexer.
+   *
+   * @param $filepath
+   */
+  public function setFileContext($filepath) {
+    $this->filepath = $filepath;
+  }
+
+  /**
    * Gathers any important metadata about the node, which will be passed to the SymbolTable.
    *
    * @param Node $node
    */
   protected function gatherMetadata(Node $node) {
     $metadata = array();
+
+    // Every node will have an associated file.
+    $metadata['file'] = $node->getAttribute("file");
 
     // Every node will have an associated line number.
     $metadata['line_number'] = $node->getLine();

@@ -4,10 +4,8 @@ namespace cweagans\TheForce;
 
 use PhpParser\Lexer;
 use PhpParser\Node\Name;
-use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
-use PhpParser\NodeDumper;
-use cweagans\TheForce\SymbolTable;
+use cweagans\TheForce\NodeVisitor\FileIdentifier;
 use cweagans\TheForce\NodeVisitor\ClassFinder;
 use cweagans\TheForce\NodeVisitor\FunctionFinder;
 use cweagans\TheForce\NodeVisitor\MethodFinder;
@@ -55,7 +53,7 @@ class Indexer {
    * @param array $paths Paths to search for indexable files.
    * @param string $filemask A regex that defines what files to index.
    */
-  public function __construct(array $paths, $filemask = '/^.+\.php$/i') {
+  public function __construct(array $paths = array(), $filemask = '/^.+\.php$/i') {
     // Set up the directory path related options.
     $this->paths = $paths;
     $this->filemask = $filemask;
@@ -67,6 +65,7 @@ class Indexer {
     // Build a new traverser and store it for later.
     $this->traverser = new NodeTraverser();
     $this->traverser->addVisitor(new NameResolver());
+    $this->traverser->addVisitor(new FileIdentifier("/dev/null"));
     $this->traverser->addVisitor(new ClassFinder());
     $this->traverser->addVisitor(new FunctionFinder());
     $this->traverser->addVisitor(new MethodFinder());
@@ -102,6 +101,7 @@ class Indexer {
     $current = 0;
     $total = count($this->filelist);
     foreach ($this->filelist as $file) {
+      // Index the file.
       $this->indexFile($file);
       $current++;
       if (is_callable($reportFunction)) {
@@ -114,6 +114,8 @@ class Indexer {
    * Reindex a specific file.
    */
   public function indexFile($path) {
+    // Let the file identifier visitor know what file we're working on.
+    $this->traverser->replaceVisitor("cweagans\\TheForce\\NodeVisitor\\FileIdentifier", new FileIdentifier($path));
     $this->traverser->traverse($this->parser->parseFile($path));
   }
 }
