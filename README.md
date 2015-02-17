@@ -81,6 +81,7 @@ These are the things I want to do, roughly in order of when I'm going to do them
 * Ensure that all variables in the AST produced by the PHP Parser have info about
   the variable type.
 * Add scope-aware variable indexing
+* Start integration with YCMD
 * Add basic go-to-definition support
 * Add command to re-parse a file (editors will use this when a file is saved)
 * Add function autocompletion
