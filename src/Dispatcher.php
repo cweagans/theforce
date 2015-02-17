@@ -45,7 +45,7 @@ class Dispatcher {
    * Use a config file for the indexer.
    *
    * Example:
-   * {"cmd": "setConfig", "data": {"path": "/path/to/your/config.json"}}
+   * {"cmd": "setConfig", "data": {"path": "/path/to/your/config.ini"}}
    */
   public function setConfig($data) {
     $config = parse_ini_file($data->path);
