@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+<?php
+
+if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+  require __DIR__ . '/vendor/autoload.php';
+}
+else {
+  require __DIR__ . '/../../autoload.php';
+}
+
+if (php_sapi_name() != 'cli') {
+  die('Must run from the command line.');
+}
+
+$loop = React\EventLoop\Factory::create();
+$socket = new React\Socket\Server($loop);
+
+$socket->on('connection', function(\React\Stream\DuplexStreamInterface $conn) {
+  $dispatcher = new cweagans\TheForce\Dispatcher($conn);
+  $conn->on('data', array($dispatcher, 'dispatch'));
+});
+
+$socket->listen('13370');
+
+$loop->run();
