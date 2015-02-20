@@ -78,7 +78,7 @@ class Indexer {
    * Build a list of files to index.
    */
   protected function rebuildFileList() {
-    $this->filelist = array();
+    $this->filelist = $this->getPhpBuiltins();
     foreach ($this->paths as $path) {
       $directory = new \RecursiveDirectoryIterator($path, \RecursiveDirectoryIterator::SKIP_DOTS);
       $iterator = new \RecursiveIteratorIterator($directory, \RecursiveIteratorIterator::SELF_FIRST);
@@ -87,6 +87,18 @@ class Indexer {
         $this->filelist[] = $file[0];
       }
     }
+  }
+
+  /**
+   * Get a list of generated stubs for built in PHP symbols.
+   *
+   * @return array
+   */
+  protected function getPhpBuiltins() {
+    $basedir = __DIR__ . '/../data/';
+    return array(
+      $basedir . 'stdlib.php',
+    );
   }
 
   /**
