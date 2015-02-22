@@ -1,6 +1,7 @@
 # Introduction
 
 [![Build Status](https://travis-ci.org/cweagans/theforce.svg?branch=master)](https://travis-ci.org/cweagans/theforce)
+[![Gratipay](https://img.shields.io/gratipay/cweagans.svg)](https://gratipay.com/cweagans/)
 
 The Force is an autocompletion tool for PHP. It sort of works right now, and it's
 not very fast. It's more of a work in progress.
